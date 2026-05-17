@@ -13,8 +13,15 @@ const RecetaType = new GraphQLObjectType({
     nombre: { type: GraphQLString },
     titulo: { type: GraphQLString },
     descripcion: { type: GraphQLString },
+    consejos: { type: GraphQLString },
     instrucciones: { type: GraphQLString },
     ingredientes: { type: new GraphQLList(GraphQLString) },
+    /** Texto para UI: descripcion del catalogo si existe, si no nombre (match sigue con `ingredientes`) */
+    ingredientesMostrar: {
+      type: new GraphQLList(GraphQLString),
+      resolve: (parent) =>
+        parent.ingredientes_mostrar ?? parent.ingredientesMostrar ?? [],
+    },
     matchPorcentaje: { type: GraphQLFloat },
     tiempo_prep: { type: GraphQLInt },
     comensales: { type: GraphQLInt },

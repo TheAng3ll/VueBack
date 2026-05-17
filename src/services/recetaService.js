@@ -18,6 +18,7 @@ const RECETAS_CON_INGREDIENTES_SQL = `
     COALESCE(r.nombre, r.titulo) AS nombre,
     r.titulo,
     r.descripcion,
+    r.consejos,
     r.instrucciones,
     r.tiempo_prep,
     r.comensales,
@@ -28,12 +29,26 @@ const RECETAS_CON_INGREDIENTES_SQL = `
     r.created_at,
     f.url AS imagen,
     COALESCE(
-      array_agg(DISTINCT i.nombre) FILTER (WHERE i.nombre IS NOT NULL),
+      (
+        SELECT array_agg(i2.nombre ORDER BY i2.nombre)
+        FROM receta_ingredientes ri2
+        JOIN ingredientes i2 ON i2.id = ri2.ingrediente_id
+        WHERE ri2.receta_id = r.id
+      ),
       ARRAY[]::text[]
-    ) AS ingredientes
+    ) AS ingredientes,
+    COALESCE(
+      (
+        SELECT array_agg(
+          COALESCE(NULLIF(trim(i2.descripcion), ''), i2.nombre) ORDER BY i2.nombre
+        )
+        FROM receta_ingredientes ri2
+        JOIN ingredientes i2 ON i2.id = ri2.ingrediente_id
+        WHERE ri2.receta_id = r.id
+      ),
+      ARRAY[]::text[]
+    ) AS ingredientes_mostrar
   FROM recetas r
-  LEFT JOIN receta_ingredientes ri ON ri.receta_id = r.id
-  LEFT JOIN ingredientes i ON i.id = ri.ingrediente_id
   LEFT JOIN fotos f
     ON f.entidad_id = r.id
     AND f.entidad_tipo = 'RECETA'
@@ -63,6 +78,8 @@ export const buscarRecetasPorIngredientes = async (ingredientes = []) => {
 
   const { rows } = await query(RECETAS_CON_INGREDIENTES_SQL);
 
+  const ingredientesUsuarioSet = new Set(ingredientesUsuario);
+
   const resultados = rows
     .map((receta) => {
       const ingredientesReceta = sanitizarIngredientesEntrada(receta.ingredientes);
@@ -72,8 +89,8 @@ export const buscarRecetasPorIngredientes = async (ingredientes = []) => {
         return null;
       }
 
-      const ingredientesEnComun = ingredientesReceta.filter((ingrediente) =>
-        ingredientesUsuario.includes(ingrediente)
+      const ingredientesEnComun = ingredientesReceta.filter((ingReceta) =>
+        ingredientesUsuarioSet.has(ingReceta)
       ).length;
 
       const matchPorcentaje = Number(

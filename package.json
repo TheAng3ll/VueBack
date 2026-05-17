@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
+    "seed:bulk": "node scripts/seed-bulk-recipes.mjs",
+    "seed:elaboradas": "node scripts/seed-recetas-elaboradas.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -59,8 +59,7 @@ VALUES
   ('platano', 'Platano maduro', 'fruta'),
   ('fresas', 'Fresas frescas', 'fruta'),
   ('avena', 'Avena en hojuelas', 'cereal'),
-  ('frijol cocido', 'Frijol negro cocido', 'legumbre')
-ON CONFLICT (nombre) DO NOTHING;
+  ('frijol cocido', 'Frijol negro cocido', 'legumbre');
 
 -- =========================================
 -- 3) RECETAS

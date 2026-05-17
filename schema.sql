@@ -23,8 +23,7 @@ CREATE TABLE IF NOT EXISTS ingredientes (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
   descripcion TEXT,
-  categoria VARCHAR(50),
-  CONSTRAINT uq_ingredientes_nombre UNIQUE (nombre)
+  categoria VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS recetas (
@@ -32,6 +31,7 @@ CREATE TABLE IF NOT EXISTS recetas (
   nombre VARCHAR(255),
   titulo VARCHAR(255) NOT NULL,
   descripcion TEXT,
+  consejos TEXT,
   instrucciones TEXT NOT NULL,
   tiempo_prep INTEGER,
   comensales INTEGER DEFAULT 1,
@@ -64,3 +64,4 @@ CREATE TABLE IF NOT EXISTS receta_ingredientes (
 CREATE INDEX IF NOT EXISTS idx_fotos_entidad ON fotos(entidad_id, entidad_tipo);
 CREATE INDEX IF NOT EXISTS idx_receta_ingredientes_receta ON receta_ingredientes(receta_id);
 CREATE INDEX IF NOT EXISTS idx_receta_ingredientes_ingrediente ON receta_ingredientes(ingrediente_id);
+CREATE INDEX IF NOT EXISTS idx_ingredientes_nombre ON ingredientes (nombre);
