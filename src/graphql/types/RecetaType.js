@@ -30,6 +30,7 @@ const RecetaType = new GraphQLObjectType({
     imagen: { type: GraphQLString },
     usuario_id: { type: GraphQLInt },
     autor_id: { type: GraphQLInt },
+    autor_username: { type: GraphQLString },
     created_at: { type: GraphQLString },
   }),
 });

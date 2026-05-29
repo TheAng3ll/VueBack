@@ -2,10 +2,18 @@ import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql'
 import RecetaType from '../types/RecetaType.js';
 import {
   buscarRecetasPorIngredientes,
+  listarRecetas,
   obtenerRecetaPorId,
 } from '../../services/recetaService.js';
 
 const recetaQueries = {
+  listarRecetas: {
+    type: new GraphQLList(RecetaType),
+    args: {
+      limite: { type: GraphQLInt },
+    },
+    resolve: async (_parent, { limite }) => listarRecetas(limite),
+  },
   buscarRecetas: {
     type: new GraphQLList(RecetaType),
     args: {

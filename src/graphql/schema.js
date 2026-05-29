@@ -1,5 +1,7 @@
 import { GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import recetaQueries from './queries/recetaQueries.js';
+import ingredienteQueries from './queries/ingredienteQueries.js';
+import recetaMutations from './mutations/recetaMutations.js';
 import usuarioMutations from './mutations/usuarioMutations.js';
 
 const query = new GraphQLObjectType({
@@ -10,6 +12,7 @@ const query = new GraphQLObjectType({
       resolve: () => 'Hello world!',
     },
     ...recetaQueries,
+    ...ingredienteQueries,
   },
 });
 
@@ -17,6 +20,7 @@ const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     ...usuarioMutations,
+    ...recetaMutations,
   },
 });
 
