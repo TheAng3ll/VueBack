@@ -3,6 +3,7 @@ import recetaQueries from './queries/recetaQueries.js';
 import ingredienteQueries from './queries/ingredienteQueries.js';
 import recetaMutations from './mutations/recetaMutations.js';
 import usuarioMutations from './mutations/usuarioMutations.js';
+import usuarioQueries from './queries/usuarioQueries.js';
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -13,6 +14,7 @@ const query = new GraphQLObjectType({
     },
     ...recetaQueries,
     ...ingredienteQueries,
+    ...usuarioQueries,
   },
 });
 
